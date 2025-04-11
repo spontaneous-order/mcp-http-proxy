@@ -12,6 +12,20 @@ This Node.js script (`rpc-proxy-worker.js`) acts as an intermediary proxy server
 3.  **Offering Real-time Events:** It provides a Server-Sent Events (SSE) endpoint for clients to receive asynchronous notifications and responses from the MCP server.
 4.  **Providing a Web Interface:** It includes a basic web dashboard for viewing available tools and simple interfaces for debugging and sending commands.
 
+## Benefits
+
+This `mcp-http-proxy` provides several advantages:
+
+*   **Standard Web Protocol Access:** Exposes an `stdio`-based MCP server over standard HTTP (GET/POST) and Server-Sent Events (SSE), making it accessible to web applications and diverse HTTP clients (`curl`, Python `requests`, JavaScript `fetch`, etc.).
+*   **Decoupling and Centralization:** Acts as a stable intermediary, allowing multiple clients to interact with a single managed MCP process instance without needing to handle process management themselves.
+*   **Flexible Client Interaction:** Supports multiple interaction methods:
+    *   **Simplified URL Parameters (`/tool/:toolName`):** Easy for clients needing simple GET requests; the proxy handles JSON-RPC translation.
+    *   **Raw JSON-RPC (`/rpc/raw/command`):** Provides full control for clients constructing their own JSON-RPC commands via HTTP POST.
+*   **Real-time Communication:** Enables the server to push asynchronous responses, logs, and events to connected clients via the `/sse` endpoint, ideal for long-running tasks and responsive UIs.
+*   **Simplified Client Dependencies:** Clients interact via standard HTTP, eliminating the need for them to install or use specific MCP SDKs or handle `stdio` communication.
+*   **Built-in Introspection and Debugging:** Includes basic web interfaces (`/`, `/rpc/command`, `/debug`, etc.) for tool discovery, manual testing, and observing the raw communication flow.
+*   **Direct Proxy Control:** By implementing the `stdio` communication directly within the proxy (without relying on the MCP SDK *in the proxy*), it offers fine-grained control over the proxy-to-MCP interaction and minimizes internal dependencies.
+
 ## How it Works
 
 The system operates with two main processes:
